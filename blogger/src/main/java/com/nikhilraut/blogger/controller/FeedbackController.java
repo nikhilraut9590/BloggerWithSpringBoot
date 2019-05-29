@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,13 +25,14 @@ import com.nikhilraut.blogger.repository.IFeedbackRepository;
 
 @RestController
 @RequestMapping("api/")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FeedbackController {
 
 	@Autowired
 	IFeedbackRepository iFeedbackRepository;
 
 	// get all Feedbacks list
-	@GetMapping("/feedback")
+	@GetMapping("feedback")
 	public ResponseEntity<List<Feedback>> getAllFeedbacks() {
 		List<Feedback> feedbackList = iFeedbackRepository.findAll();
 		if (feedbackList.isEmpty())
@@ -39,7 +41,7 @@ public class FeedbackController {
 	}
 
 	// create new Feedback
-	@PostMapping("/feedback")
+	@PostMapping("feedback")
 	public ResponseEntity<Feedback> createFeedback(@RequestBody Feedback feedback) throws Exception {
 		Optional<Feedback> feedback1 = iFeedbackRepository.findById(feedback.getFeedback_Id());
 		if (feedback1.isPresent())
@@ -48,7 +50,7 @@ public class FeedbackController {
 	}
 
 	// get Feedback by id
-	@GetMapping("/feedback/{id}")
+	@GetMapping("feedback/{id}")
 	public ResponseEntity<?> getFeedbackById(@PathVariable(value = "id") Integer feedbackId) {
 		Optional<Feedback> feedback = iFeedbackRepository.findById(feedbackId);
 		if (!feedback.isPresent())
@@ -57,15 +59,15 @@ public class FeedbackController {
 
 	}
 
-	@DeleteMapping("/feedback/{id}")
-	public ResponseEntity<?> deleteFeedback(@PathVariable(value = "id") Integer feedbackId) {
+	@DeleteMapping("feedback/{id}")
+	public ResponseEntity<String> deleteFeedback(@PathVariable(value = "id") Integer feedbackId) {
 		Feedback feedback = iFeedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException());
 		iFeedbackRepository.delete(feedback);
-		return ResponseEntity.ok().build();
+		return new ResponseEntity<String>("feedback deleted successfully.!", HttpStatus.OK);
 	}
 
 	// Update a Note
-	@PutMapping("/feedback/{id}")
+	@PutMapping("feedback/{id}")
 	public ResponseEntity<Feedback> updateFeedback(@PathVariable(value = "id") Integer feedbackId,
 			@Valid @RequestBody Feedback feedbackDetails) {
 

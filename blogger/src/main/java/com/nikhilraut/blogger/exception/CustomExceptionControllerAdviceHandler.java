@@ -19,15 +19,15 @@ public class CustomExceptionControllerAdviceHandler extends ResponseEntityExcept
 	@ExceptionHandler(BlogNotFoundException.class)
 	public final ResponseEntity<Object> handleBlogNotFoundException(BlogNotFoundException bnfe, WebRequest request) {
 		List<String> details = new ArrayList<>();
-		
-		ErrorResponse error = new ErrorResponse("Blog is not available.", details);
+		details.add("blog is not availble in database.");
+		ErrorResponse error = new ErrorResponse("Blog Not Found.", details);
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
 
 	@ExceptionHandler(Exception.class)
 	public final ResponseEntity<Object> handleAllException(Exception exception, WebRequest request) {
 		List<String> details = new ArrayList<>();
-		details.add(exception.getLocalizedMessage());
+		details.add("may be data not available in database.");
 		ErrorResponse errorResponse = new ErrorResponse("Something went wrong", details);
 		return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
 	}

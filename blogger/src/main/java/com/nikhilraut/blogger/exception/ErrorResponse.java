@@ -33,4 +33,10 @@ public class ErrorResponse {
 	public ErrorResponse() {
 		// TODO Auto-generated constructor stub
 	}
+
+	@Override
+	public String toString() {
+		return "ErrorResponse [message=" + message + ", details=" + details + "]";
+	}
+	
 }

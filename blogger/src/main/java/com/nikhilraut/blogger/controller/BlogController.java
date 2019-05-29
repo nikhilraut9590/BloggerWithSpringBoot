@@ -36,28 +36,32 @@ public class BlogController {
 
 	// get all blogs list
 	@GetMapping("/blog")
-	public ResponseEntity<List<Blog>> getAllBlogs() {
+	public ResponseEntity<List<Blog>> getAllBlogs() throws BlogNotFoundException{
 		List<Blog> blogList = blogRepository.findAll();
 		if (blogList.isEmpty())
 			throw new BlogNotFoundException();
 		return new ResponseEntity<>(blogList, HttpStatus.OK);
 	}
 
-	// create new blog
 	@PostMapping("/blog")
-	public ResponseEntity<Blog> createBlog(@RequestBody Blog blog) throws Exception {
-		Optional<Blog> blog1 = blogRepository.findById(blog.getId());
-		if (!blog1.isPresent())
-			throw new HttpMediaTypeNotSupportedException("");
+	public ResponseEntity<Blog> saveBlog(@RequestBody Blog blog) throws Exception {
+		Optional<Blog> blog1 = blogRepository.findById(blog.getId());	
+		if(blog1.isPresent()){
+			throw new Exception("Already exist");
+		}
 		return new ResponseEntity<Blog>(blogRepository.save(blog), HttpStatus.CREATED);
 	}
 
 	// get blog by id
 	@GetMapping("/blog/{id}")
 	public ResponseEntity<?> getBlogById(@PathVariable(value = "id") Integer blogId) {
-		Optional<Blog> blog = blogRepository.findById(blogId);
-		if (!blog.isPresent())
+		Blog blog = blogRepository.findById(blogId).orElseThrow(
+				() -> {
+					return new BlogNotFoundException("ID+: " + blogId);
+				});
+		/*if (!blog.isPresent())
 			throw new BlogNotFoundException("ID+: " + blogId);
+		*/
 		return new ResponseEntity<>(blog, HttpStatus.OK);
 
 	}

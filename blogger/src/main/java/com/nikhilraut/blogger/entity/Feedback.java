@@ -2,6 +2,7 @@ package com.nikhilraut.blogger.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +11,7 @@ import javax.persistence.Table;
 @Table(name="feedback")
 public class Feedback {
 	@Id
+	@GeneratedValue
 	@Column(name="feedId")
 	private int feedback_Id;
 	@Column(name="name")

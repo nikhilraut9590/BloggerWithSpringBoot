@@ -41,6 +41,15 @@ public class Blog implements Serializable {
 	private String image;
 	private boolean is_featured;
 	private boolean is_active;
+	private String category;
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		this.category = category;
+	}
 
 	@Column(nullable = false, updatable = false)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -121,7 +130,7 @@ public class Blog implements Serializable {
 	}
 
 	public Blog(int id, @NotBlank String title, String description, String image, boolean is_featured,
-			boolean is_active, Date created_at, Date updated_at) {
+			boolean is_active, String category, Date created_at, Date updated_at) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -129,6 +138,7 @@ public class Blog implements Serializable {
 		this.image = image;
 		this.is_featured = is_featured;
 		this.is_active = is_active;
+		this.category = category;
 		this.created_at = created_at;
 		this.updated_at = updated_at;
 	}
