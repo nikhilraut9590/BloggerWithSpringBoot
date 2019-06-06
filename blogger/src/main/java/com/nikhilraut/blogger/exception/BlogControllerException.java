@@ -9,11 +9,6 @@ import org.springframework.web.server.MediaTypeNotSupportedStatusException;
 
 public class BlogControllerException {
 
-	/*@ExceptionHandler(BlogNotFoundException.class)
-	public ResponseEntity<Object> exception(BlogNotFoundException exception) {
-		return new ResponseEntity<>("Blog Not Found", HttpStatus.NOT_FOUND);
-	}*/
-
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<Object> exception(RuntimeException exception) {
 		return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

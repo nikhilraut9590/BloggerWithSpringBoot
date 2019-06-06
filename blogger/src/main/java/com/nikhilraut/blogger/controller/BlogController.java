@@ -13,6 +13,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -85,7 +86,7 @@ public class BlogController {
 		blog.setIs_featured(blogDetails.isIs_featured());
 		blog.setIs_active(blogDetails.isIs_active());
 		blog.setImage(blogDetails.getImage());
-
+		blog.setCategory(blogDetails.getCategory());
 		Blog updatedBlog = blogRepository.save(blog);
 		return new ResponseEntity<Blog>(updatedBlog, HttpStatus.OK);
 	}

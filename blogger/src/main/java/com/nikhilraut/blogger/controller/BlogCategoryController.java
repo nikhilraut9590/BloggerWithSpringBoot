@@ -1,22 +1,27 @@
 package com.nikhilraut.blogger.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nikhilraut.blogger.entity.BlogCategory;
+import com.nikhilraut.blogger.entity.Feedback;
 import com.nikhilraut.blogger.exception.CategoryNotFoundException;
+import com.nikhilraut.blogger.exception.FeedbackNotFoundException;
 import com.nikhilraut.blogger.repository.IBlogCategoryRepository;
 
 @RestController
@@ -50,4 +55,23 @@ public class BlogCategoryController {
 			throw new CategoryNotFoundException();
 		return new ResponseEntity<>(BlogCategory, HttpStatus.FOUND);
 	}
+
+	@DeleteMapping("category/{id}")
+	public ResponseEntity<String> deleteBlogCategory(@PathVariable(value = "id") Integer blogCategoryId) {
+		BlogCategory blogCategory = iBlogCategoryRepository.findById(blogCategoryId)
+				.orElseThrow(() -> new CategoryNotFoundException());
+		iBlogCategoryRepository.delete(blogCategory);
+		return new ResponseEntity<String>("BlogCategory deleted successfully.!", HttpStatus.OK);
+	}
+
+	@PutMapping("category/{id}")
+	public ResponseEntity<BlogCategory> updateFeedback(@PathVariable(value = "id") Integer blogCategoryId,
+			@Valid @RequestBody BlogCategory blogCategoryDetails) {
+		BlogCategory blogCategory = iBlogCategoryRepository.findById(blogCategoryId)
+				.orElseThrow(() -> new CategoryNotFoundException());
+		blogCategory.setCategoryName(blogCategoryDetails.getCategoryName());
+		BlogCategory updatedBlogCategory = iBlogCategoryRepository.save(blogCategory);
+		return new ResponseEntity<BlogCategory>(updatedBlogCategory, HttpStatus.OK);
+	}
+
 }
