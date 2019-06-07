@@ -9,11 +9,9 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,7 +35,7 @@ public class BlogController {
 
 	// get all blogs list
 	@GetMapping("/blog")
-	public ResponseEntity<List<Blog>> getAllBlogs() throws BlogNotFoundException{
+	public ResponseEntity<List<Blog>> getAllBlogs() throws BlogNotFoundException {
 		List<Blog> blogList = blogRepository.findAll();
 		if (blogList.isEmpty())
 			throw new BlogNotFoundException();
@@ -46,8 +44,8 @@ public class BlogController {
 
 	@PostMapping("/blog")
 	public ResponseEntity<Blog> saveBlog(@RequestBody Blog blog) throws Exception {
-		Optional<Blog> blog1 = blogRepository.findById(blog.getId());	
-		if(blog1.isPresent()){
+		Optional<Blog> blog1 = blogRepository.findById(blog.getId());
+		if (blog1.isPresent()) {
 			throw new Exception("Already exist");
 		}
 		return new ResponseEntity<Blog>(blogRepository.save(blog), HttpStatus.CREATED);
@@ -56,13 +54,13 @@ public class BlogController {
 	// get blog by id
 	@GetMapping("/blog/{id}")
 	public ResponseEntity<?> getBlogById(@PathVariable(value = "id") Integer blogId) {
-		Blog blog = blogRepository.findById(blogId).orElseThrow(
-				() -> {
-					return new BlogNotFoundException("ID+: " + blogId);
-				});
-		/*if (!blog.isPresent())
-			throw new BlogNotFoundException("ID+: " + blogId);
-		*/
+		Blog blog = blogRepository.findById(blogId).orElseThrow(() -> {
+			return new BlogNotFoundException("ID+: " + blogId);
+		});
+		/*
+		 * if (!blog.isPresent()) throw new BlogNotFoundException("ID+: " +
+		 * blogId);
+		 */
 		return new ResponseEntity<>(blog, HttpStatus.OK);
 
 	}

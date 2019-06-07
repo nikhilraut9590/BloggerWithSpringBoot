@@ -52,7 +52,7 @@ public class BlogControllerTest {
 		Blog blog1 = new Blog(101, "angular", "angular js", "angular.jpg", true, false,"java", new Date(), new Date());
 		List<Blog> list = new ArrayList<>();
 		list.add(blog1);
-		Mockito.when(blogRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+		Mockito.when(blogRepository.findAll()).thenReturn(Collections.emptyList());
 		mockMvc.perform(MockMvcRequestBuilders.get("http://localhost:8088/api/blog"))
 		.andExpect(MockMvcResultMatchers.status().isNotFound());
 		

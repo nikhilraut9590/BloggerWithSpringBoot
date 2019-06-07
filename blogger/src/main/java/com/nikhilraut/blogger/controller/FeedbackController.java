@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ import com.nikhilraut.blogger.repository.IFeedbackRepository;
 @RequestMapping("api/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FeedbackController {
+	Logger logger = Logger.getLogger(FeedbackController.class);
 
 	@Autowired
 	IFeedbackRepository iFeedbackRepository;
@@ -37,6 +39,7 @@ public class FeedbackController {
 		List<Feedback> feedbackList = iFeedbackRepository.findAll();
 		if (feedbackList.isEmpty())
 			throw new FeedbackNotFoundException();
+		logger.warn("Feedback not found.");
 		return new ResponseEntity<>(feedbackList, HttpStatus.OK);
 	}
 
@@ -70,13 +73,10 @@ public class FeedbackController {
 	@PutMapping("feedback/{id}")
 	public ResponseEntity<Feedback> updateFeedback(@PathVariable(value = "id") Integer feedbackId,
 			@Valid @RequestBody Feedback feedbackDetails) {
-
 		Feedback feedback = iFeedbackRepository.findById(feedbackId).orElseThrow(() -> new FeedbackNotFoundException());
-
 		feedback.setFeedbacker_emailId(feedbackDetails.getFeedbacker_emailId());
 		feedback.setFeedbacker_message(feedbackDetails.getFeedbacker_message());
 		feedback.setFeedbacker_name(feedbackDetails.getFeedbacker_name());
-
 		Feedback updatedFeedback = iFeedbackRepository.save(feedback);
 		return new ResponseEntity<Feedback>(updatedFeedback, HttpStatus.OK);
 	}

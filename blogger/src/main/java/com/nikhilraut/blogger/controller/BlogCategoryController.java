@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nikhilraut.blogger.entity.BlogCategory;
-import com.nikhilraut.blogger.entity.Feedback;
 import com.nikhilraut.blogger.exception.CategoryNotFoundException;
-import com.nikhilraut.blogger.exception.FeedbackNotFoundException;
 import com.nikhilraut.blogger.repository.IBlogCategoryRepository;
 
 @RestController
