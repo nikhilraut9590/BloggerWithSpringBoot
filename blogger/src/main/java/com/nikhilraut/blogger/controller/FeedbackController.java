@@ -33,17 +33,16 @@ public class FeedbackController {
 	@Autowired
 	IFeedbackRepository iFeedbackRepository;
 
-	// get all Feedbacks list
 	@GetMapping("feedback")
 	public ResponseEntity<List<Feedback>> getAllFeedbacks() {
 		List<Feedback> feedbackList = iFeedbackRepository.findAll();
+		System.out.println("Feedback list here..");
 		if (feedbackList.isEmpty())
 			throw new FeedbackNotFoundException();
 		logger.warn("Feedback not found.");
 		return new ResponseEntity<>(feedbackList, HttpStatus.OK);
 	}
 
-	// create new Feedback
 	@PostMapping("feedback")
 	public ResponseEntity<Feedback> createFeedback(@RequestBody Feedback feedback) throws Exception {
 		Optional<Feedback> feedback1 = iFeedbackRepository.findById(feedback.getFeedback_Id());
@@ -52,7 +51,6 @@ public class FeedbackController {
 		return new ResponseEntity<Feedback>(iFeedbackRepository.save(feedback), HttpStatus.CREATED);
 	}
 
-	// get Feedback by id
 	@GetMapping("feedback/{id}")
 	public ResponseEntity<?> getFeedbackById(@PathVariable(value = "id") Integer feedbackId) {
 		Optional<Feedback> feedback = iFeedbackRepository.findById(feedbackId);
@@ -69,7 +67,6 @@ public class FeedbackController {
 		return new ResponseEntity<String>("feedback deleted successfully.!", HttpStatus.OK);
 	}
 
-	// Update a Note
 	@PutMapping("feedback/{id}")
 	public ResponseEntity<Feedback> updateFeedback(@PathVariable(value = "id") Integer feedbackId,
 			@Valid @RequestBody Feedback feedbackDetails) {
